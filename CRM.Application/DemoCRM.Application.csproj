@@ -18,9 +18,4 @@
     <ProjectReference Include="..\DemoCRM.Persistance\DemoCRM.Persistance.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="useCases\Course\DeleteCourse\" />
-    <Folder Include="useCases\Course\UpdateCourse\" />
-  </ItemGroup>
-
 </Project>

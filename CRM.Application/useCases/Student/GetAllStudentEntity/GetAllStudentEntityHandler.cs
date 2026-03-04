@@ -15,7 +15,7 @@ namespace DemoCRM.Application.useCases.Student.GetAllStudentEntity
 
         public Task<IQueryable<Core.Entity.Student>> Handle(GetAllStudentEntityRequest request, CancellationToken cancellationToken)
         {
-            var query = _crmContext.Students.AsNoTracking();
+            var query = _crmContext.Students.Where(s => s.IsActive == true).Include(s => s.Courses).AsNoTracking();
             return Task.FromResult(query);
         }
     }

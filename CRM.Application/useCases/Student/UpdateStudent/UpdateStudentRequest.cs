@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using CourseEntity = DemoCRM.Core.Entity.Course;
+using MediatR;
 
 namespace DemoCRM.Application.useCases.Student.UpdateStudent
 {
@@ -9,6 +10,6 @@ namespace DemoCRM.Application.useCases.Student.UpdateStudent
         public string? Surname { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
+        public ICollection<CourseEntity>? Courses { get; set; } = new List<CourseEntity>();
     }
-
 }
