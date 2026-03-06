@@ -1,4 +1,6 @@
 ﻿using CRM.Application.useCases.Student.CreateStudent;
+using DemoCRM.Infrastructure.BackgroundServices;
+using DemoCRM.Infrastructure.Messaging;
 using DemoCRM.Persistance.Context;
 using DemoCRM.Persistance.Seed;
 using Microsoft.EntityFrameworkCore;
@@ -31,15 +33,25 @@ builder.Services
     .AddType<CourseMutations>()
     .AddType<DateOnly>();
 
+// EMAIL SETTINGS
+builder.Services.Configure<EmailSettings>( builder.Configuration.GetSection("EmailSettings"));
+
+// INFRASTRUCTURE SERVICES
+builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<RabbitMqPublisher>();
+
+// BACKGROUND WORKER
+builder.Services.AddHostedService<OutboxProcessor>();
+
 var app = builder.Build();
 
-//  SEED DATA 
+
+// SEED DATA
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<CrmContext>();
     await SeedData.SeedAsync(context);
 }
-
 
 if (app.Environment.IsDevelopment())
 {

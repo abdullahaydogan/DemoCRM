@@ -8,6 +8,6 @@
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
         public DateOnly? DateOfBirth { get; set; }
-        public List<int> CoursesIds { get; set; }
+        public List<int>? CoursesIds { get; set; }
     }
 }

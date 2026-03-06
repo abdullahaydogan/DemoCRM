@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CRM.Application\DemoCRM.Application.csproj" />
+    <ProjectReference Include="..\DemoCRM.Infrastructure\DemoCRM.Infrastructure.csproj" />
     <ProjectReference Include="..\DemoCRM.Persistance\DemoCRM.Persistance.csproj" />
   </ItemGroup>
 

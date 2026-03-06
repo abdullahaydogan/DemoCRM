@@ -1,8 +1,10 @@
-﻿using DemoCRM.Core.Const;
+﻿using DemoCRM.Application.Events;
+using DemoCRM.Core.Const;
 using DemoCRM.Persistance.Context;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace CRM.Application.useCases.Student.CreateStudent
 {
@@ -47,7 +49,24 @@ namespace CRM.Application.useCases.Student.CreateStudent
                 }
             }
 
+            var studentCreatedEvent = new StudentCreatedEvent
+            {
+                StudentId = student.Id,
+                Name = student.Name,
+                Email = student.Email,
+                CreatedDate = DateTime.UtcNow
+            };
+            var outBoxMessage = new DemoCRM.Core.Entity.OutboxMessage
+            {
+                Id = Guid.NewGuid(),
+                EventType = nameof(StudentCreatedEvent),
+                Payload = JsonSerializer.Serialize(studentCreatedEvent),
+                CreatedDate = DateTime.UtcNow,
+                IsProcessed = false
+            };
+
             await _crmContext.Students.AddAsync(student, cancellationToken);
+            await _crmContext.OutboxMessages.AddAsync(outBoxMessage, cancellationToken);
             await _crmContext.SaveChangesAsync(cancellationToken);
 
             return student.Adapt<CreateStudentResponse>();
